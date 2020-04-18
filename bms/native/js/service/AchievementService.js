@@ -3,9 +3,9 @@ let AchievementService = {
     showList: function () {
         $.ajax({
             headers: {
-                "X-Authentication-Token": tokenOfHeader//此处放置请求到的用户token
+                "X-Authentication-Token": globalService.tokenOfHeader//此处放置请求到的用户token
             },
-            url: basePath + '/achievement/self',
+            url: globalService.basePath + '/achievement/self',
             type: "get",
             contentType: "application/json",
             dataType: 'json',
