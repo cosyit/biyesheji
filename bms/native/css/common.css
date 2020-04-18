@@ -1,0 +1,191 @@
+/**common css */
+
+* {padding: 0;margin: 0;user-select:none;}
+
+a {text-decoration: none; /*去除下划线装饰*/color: #2f2f2f;}
+
+ul, li {
+    list-style: none; /*去除ul,li前面的点*/
+}
+body {font-size: 14px;font-family: "微软雅黑";}
+.m0-setting-width {margin: 0 auto;width: 100%;}
+.fl {float: left;}
+.fr {float: right;}
+.clear-float:after {display: block;content: '.';clear: both;visibility: hidden;height: 0;}
+
+/**header css */
+
+.h56 {
+    height: 56px;
+}
+
+.w240 {
+    width: 240px;
+}
+
+.container{
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.container header {
+    height: 56px;
+    background: #304156;
+}
+
+.container header .logo {
+    height: inherit;
+}
+
+.container header .logo .logo-img {
+    height: inherit;
+    width: 56px;
+    background: url("../img/logo.png") 100% 100% no-repeat;
+    background-size: cover;
+    border-radius: 50%;
+}
+
+.container header .logo .logo-title {
+    width: 184px;
+    line-height: 56px;
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: #f2f2f2;
+}
+
+.container header .login-part {
+    height: inherit;
+    width: 200px;
+    line-height: 56px;
+}
+
+/* 主视图区*/
+.container .main-view{
+    position:relative;
+    min-height: calc(100vh - 56px - 100px);
+}
+
+/* 侧边栏控制区 */
+.container .main-view aside{
+    width: 240px;
+    min-height: calc(100vh - 56px - 100px);
+    border-top:1px solid #f2f2f2;
+    box-sizing: border-box;
+    background: #304156;
+}
+
+.container .main-view aside ul li {
+    line-height: 50px;
+    text-align: center;
+    background: #304156;
+    margin: 0px auto;
+}
+.container .main-view aside ul li:hover{
+    background: #1d3040;
+}
+.container .main-view aside ul li a{
+    color:#f2f2f2;
+}
+
+.container .main-view aside ul li a i{
+    color:#FFF;
+    margin:0 0 0 40px;
+}
+
+.container .main-view aside ul li ul li:hover{
+    background: #1c2938;
+}
+
+
+
+.container .main-view section{
+    max-width: calc(100vw - 240px);
+    min-height: calc(100vh - 56px - 100px);
+    overflow: auto;
+}
+
+/* 表格 部分*/
+
+.my-table-area{
+    margin:10px;
+}
+
+.my-table-area .my-table{
+    width:100%;
+    margin:0px auto;
+    min-width:960px;
+    box-sizing:border-box;
+    /* 消除每个单元格自己的边框.英文语义，让边框塌方，塌方了就是没了。*/
+    border-collapse: collapse;
+    border-spacing:0px;/*自带的边框和父级的距离*/
+    text-align: center;
+    border:1px solid gray;
+    box-sizing: border-box;
+}
+
+.my-table-area .my-table tr td,th{
+    line-height: 30px;
+    font-size:12px;
+}
+
+.my-table-area .my-table caption {
+    font-size: larger;
+    margin: 10px auto;
+}
+
+
+th,td {
+    padding: 2px;
+}
+
+th{
+    background: #2f2f2f;
+    color: #fff;
+    font-weight:normal;
+    border:1px solid gray;
+
+}
+
+/*  odd/even 隔行换色  */
+table tr:nth-child(odd){
+    background: rgba(105, 94, 204, 0.37);
+}
+
+table tr td:nth-child(odd){
+    background:#a2a0a38f;
+}
+
+table tbody{
+    border-bottom: 1px solid gray ;
+}
+
+/*
+
+!* 表头的第一个单元格,上右下左。*!
+th:first-child {
+
+    border-radius: 9px 0 0 0;
+
+}
+
+!**表头的最后一个单元格，上右下左 *!
+th:last-child {
+    border-radius: 0 9px 0 0;
+}
+
+!* tr 的最后一行 下面的第一个td *!
+tfoot:last-child td:first-child {
+
+    border-radius: 0 0 0 9px;
+
+}
+
+tfoot:last-child td:last-child {
+    border-radius: 0 0 9px 0;
+}
+
+tfoot tr td{
+    background: #d4b090;
+}*/
