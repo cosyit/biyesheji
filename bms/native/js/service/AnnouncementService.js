@@ -13,8 +13,8 @@ var AnnouncementService = {
                 "                <div class=\"layui-btn-group  ml-1 mt-2\">\n" +
                 "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"addData\"><i class=\"layui-icon\"></i>\n" +
                 "                    </button>\n" +
-                "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"editData\"><i class=\"layui-icon\"></i>\n" +
-                "                    </button>\n" +
+ /*               "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"editData\"><i class=\"layui-icon\"></i>\n" +
+                "                    </button>\n" +*/
                 "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"deleteData\"><i class=\"layui-icon\"></i>\n" +
                 "                    </button>\n" +
                 "                </div>\n" +
@@ -77,7 +77,7 @@ var AnnouncementService = {
 
 
             //绑定行点击事件。
-             table.on('row(demoId)', AnnouncementService.lookOne);
+            table.on('row(demoId)', AnnouncementService.lookOne);
             table.on('toolbar(demoId)', function (obj) {
 
                 console.log(obj)
@@ -87,8 +87,8 @@ var AnnouncementService = {
                 switch (obj.event) {
                     case 'addData':
                         var data = checkStatus.data;  //获取选中行数据
-                        console.log(JSON.stringify(data));
-                        layer.msg("add");
+                       // console.log(JSON.stringify(data));
+                       // layer.msg("add");
                         //添加数据。
                         globalService.pop("  <div class=\"layui-form-item p-all-20\">\n" +
                             "    <label class=\"layui-form-label\">公告标题</label>\n" +
@@ -106,19 +106,36 @@ var AnnouncementService = {
                             "" +
                             "  <div class=\"layui-form-item  p-horizontal-direction-20\">\n" +
                             "    <div class=\"layui-input-block\">\n" +
-                            "      <button onclick='AnnouncementService.submitAnnouncement()' type=\"submit\" class=\"layui-btn\" lay-submit=\"\" lay-filter=\"demo1\">立即提交</button>\n" +
+                            "      <button onclick='AnnouncementService.addAnnouncement()' type=\"submit\" class=\"layui-btn\" lay-submit=\"\" lay-filter=\"demo1\">立即提交</button>\n" +
                             "    </div>\n" +
                             "  </div>");
                         break;
                     case 'editData':
                         var data = checkStatus.data;  //获取选中行数据
-                        alert(JSON.stringify(data));
-                        layer.msg("edit")
+                        alert(JSON.stringify(data.length));
+
+
+                        if(data.length==0){
+                            layer.msg("当前未选择，请选择一个公告。");
+                            return;
+                        }else if(data.length>1){
+                            layer.msg("请选择唯一的公告进行编辑。");
+                            return;
+                        }else if(data.length == 1){
+                        AnnouncementService.editAnnouncement(data[0].id);
+                        }
+
                         break;
                     case 'deleteData':
                         var data = checkStatus.data;  //获取选中行数据
-                        alert(JSON.stringify(data));
-                        layer.msg("delete")
+                        alert(JSON.stringify(data.length));
+
+                        let ids = [];
+                        for (var i = 0; i < data.length; i++) {
+                            let id = data[i].id;
+                            ids.push(id);
+                        }
+                        AnnouncementService.deleteAnnouncement(ids);
                         break;
                 }
                 ;
@@ -141,22 +158,46 @@ var AnnouncementService = {
 
 
     },
-    addList: function () {
+    deleteAnnouncement: function (ids) {
+        //发送ajax
+
+        $.ajax({
+            headers: {"X-Authentication-Token": globalService.tokenOfHeader},
+            url: globalService.basePath + '/announcement/' + ids,
+            type: "delete",
+            contentType: "application/json;charset=utf-8",
+            cache: false,
+            async: true,
+            beforeSend: function () {
+                this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
+            },
+            success: function (res) {
+                if (res.code == 200) {
+                    layer.msg("删除成功")
+                }
+            },
+            complete: function () {
+                layer.close(this.layerIndex);
+            }
+        });
+
+        AnnouncementService.showList();
+    },
+    editAnnouncement: function (id) {
+        layer.msg("edit id ：" + id);
+        //根据id 查询当前id的信息，并绑定到页面上。
+
+
+
+        //打开pop 进行数据绑定。
+        globalService.pop();
+
+
 
     },
-    deleteOne: function () {
-
-    },
-    updateOne: function () {
-
-    },
-    submitAnnouncement: function () {
-        ///announcement  post
-
+    addAnnouncement: function () {
         let announcementContent = $('.announcementContent').val();
         let announcementTitle = $('.announcementTitle').val();
-
-        layer.msg(announcementTitle + " == " + announcementContent);
 
         let param = {title: announcementTitle, content: announcementContent};
         $.ajax({
@@ -179,11 +220,30 @@ var AnnouncementService = {
                 layer.close(this.layerIndex);
             }
         });
-
-
         globalService.removePop();
-
         AnnouncementService.showList();
+    },
+    queryOneAnnouncement:function (id) {
+        $.ajax({
+            headers: {"X-Authentication-Token": globalService.tokenOfHeader},
+            url: globalService.basePath + '/announcement',
+            type: "get",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(param),
+            cache: false,
+            async: true,
+            beforeSend: function () {
+                this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
+            },
+            success: function (res) {
+                if (res.code == 200) {
+                    layer.msg("添加成功")
+                }
+            },
+            complete: function () {
+                layer.close(this.layerIndex);
+            }
+        });
     }
 
 }
