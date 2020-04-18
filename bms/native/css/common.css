@@ -151,6 +151,11 @@ th{
 
 }
 
+/* 覆盖layui 自定义样式*/
+.layui-table-view {
+    margin: 0;
+}
+
 /*!*  odd/even 隔行换色  *!*/
 /*table tr:nth-child(odd){*/
 /*    background: rgba(105, 94, 204, 0.37);*/

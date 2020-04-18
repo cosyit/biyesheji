@@ -6,20 +6,17 @@ var AnnouncementService = {
             var layUi_$ = layui.$, layer = layui.layer, form = layui.form, table = layui.table;
 
             //1.清楚上一次展示的数据,并设置新的视图。
-            globalService.setUIHtml("            <div class=\"layui-btn-group ml-1 mt-2\">\n" +
-                "                <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"><i class=\"layui-icon\"></i>\n" +
-                "                </button>\n" +
-                "                <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"getCheckData\"><i class=\"layui-icon\"></i>\n" +
-                "                </button>\n" +
-                "                <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"><i class=\"layui-icon\"></i>\n" +
-                "                </button>\n" +
-                "            </div>\n" +
-                "            <table id=\"demoId\" class=\"layui-hide\" lay-filter=\"demoId\"></table>\n" +
-                "\n" +
-                "\n" +
+            globalService.setUIHtml("            <table id=\"demoId\" class=\"layui-hide\" lay-filter=\"demoId\"></table>\n" +
+                "            \n" +
                 "            <script type=\"text/html\" id=\"toolbarDemo\">\n" +
-                "                <div class=\"layui-btn-container\">\n" +
-                "                    <button class=\"layui-btn layui-btn-sm\" lay-event=\"getCheckData\">获取选中行数据</button>\n" +
+                "\n" +
+                "                <div class=\"layui-btn-group  ml-1 mt-2\">\n" +
+                "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"addData\"><i class=\"layui-icon\"></i>\n" +
+                "                    </button>\n" +
+                "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"editData\"><i class=\"layui-icon\"></i>\n" +
+                "                    </button>\n" +
+                "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"deleteData\"><i class=\"layui-icon\"></i>\n" +
+                "                    </button>\n" +
                 "                </div>\n" +
                 "            </script>");
             //2.发送ajax.
@@ -50,16 +47,30 @@ var AnnouncementService = {
                             , data: res.data
                             ,height:'full-200'
                             ,limit:30
+                            ,done:function () {
+                                //         // 表格渲染后，用JS覆盖一下layui表格中不好看的样式。
+                                $('#demoId>.layui-table-view').css("margin","2px 0")
+
+                                //alert( $('#demoId>.layui-table-view').css("margin"));
+                            }
                         });
                     } else {
                         layer.msg(res.msg);
                     }
+
+
 
                 },
                 error: function () {
                     layer.msg("接口不可用！");
                 }
             });
+
+            // 表格渲染后，用JS覆盖一下layui表格中不好看的样式。
+        // .layui-table-view {
+        //         margin: 10px 0;
+        //     }
+
 
             //绑定行点击事件。
             //   table.on('row(demoId)', AnnouncementService.lookOne);
@@ -70,9 +81,28 @@ var AnnouncementService = {
                     // 行事件
                     var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
                     switch(obj.event){
-                        case 'getCheckData':
+                        case 'addData':
                             var data = checkStatus.data;  //获取选中行数据
-                            layer.alert(JSON.stringify(data));
+                            alert(JSON.stringify(data));
+                            layer.msg("add");
+                            //添加数据。
+                            globalService.pop(100,100,100,100,"<p>helloword</p>")
+
+
+
+
+
+
+                            break;
+                        case 'editData':
+                            var data = checkStatus.data;  //获取选中行数据
+                           alert(JSON.stringify(data));
+                            layer.msg("edit")
+                            break;
+                        case 'deleteData':
+                            var data = checkStatus.data;  //获取选中行数据
+                           alert(JSON.stringify(data));
+                            layer.msg("delete")
                             break;
                     };
                 });
