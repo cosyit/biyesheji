@@ -37,17 +37,16 @@ var AnnouncementService = {
 
                 },
                 error: function () {
-                    layui.msg("接口不可用！");
+                    layer.msg("接口不可用！");
                 }
             });
 
             //绑定行点击事件。
             table.on('row(demoId)', AnnouncementService.lookOne);
 
-
         })
     },
-    lookOne:function () {
+    lookOne:function (obj) {
         layer.msg("内容展示");
     },
     addList: function () {
