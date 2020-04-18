@@ -1,21 +1,21 @@
 var AnnouncementService = {
 
-    getToken:function(){
-       return  localStorage.getItem("token");
+    getToken: function () {
+        return localStorage.getItem("token");
     },
 
-    showList:function(){
+    showList: function () {
 
-      //  lauui.use(["jquery","layer","form",'table'],function(){});
-        layui.use(["jquery","layer","form",'table'],function () {
-            var layUi_$ = layui.$,  layer = layui.layer,    form = layui.form,  table=layui.table;
+        //  lauui.use(["jquery","layer","form",'table'],function(){});
+        layui.use(["jquery", "layer", "form", 'table'], function () {
+            var layUi_$ = layui.$, layer = layui.layer, form = layui.form, table = layui.table;
 
             //1.清楚上一次展示的数据。
             $('section').html("");
 
             //2.发送ajax.
             $.ajax({
-                url: basePath+"/announcement",
+                url: basePath + "/announcement",
 
 
             })
@@ -26,9 +26,7 @@ var AnnouncementService = {
             //4.展示ui.
 
 
-
-
-              // 测试lay-ui 引入 //
+            // 测试lay-ui 引入 //
             // layer.msg("公告显示");
 
             $('section').html("            <div class=\"announcement-table-area\">\n" +
@@ -38,10 +36,10 @@ var AnnouncementService = {
             layui.use('table', function () {
                 layui.table.render({
                     elem: '#demoId', //绑定元素
-                    url: basePath+"/announcement"
+                    url: basePath + "/announcement"
                     , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                     , cols: [[
-                         {field: 'id', width: 70, title: 'ID', sort: true}
+                        {field: 'id', width: 70, title: 'ID', sort: true}
                         , {field: 'title', width: 280, title: '小说名'}
                         , {field: 'author', width: 100, title: '作者', sort: true}
                         , {field: 'publish_date', width: 80, title: '时间'}
@@ -49,27 +47,18 @@ var AnnouncementService = {
                         , {field: 'novel_link', title: '链接', sort: true}
                         , {field: 'operator_time', title: '更新时间', sort: true}
                     ]]
-                    ,request:{
-                        pageName:"pageNo",
-                        limitName:"pageSize",
-                        request:{
-                            beforeSend:function(xhr){
-
-                                alert(1)
-                                layer.msg("公告显示");
-                                xhr.setRequestHeader("X-Authentication-Token:'"+localStorage.getItem("token")+"'");
-
-                            }
-                        }
+                    , request: {
+                        pageName: "pageNo",
+                        limitName: "pageSize",
+                        headers:{"X-Authentication-Token":localStorage.getItem("token")}
                     }
                     //数据重新绑定。
-                    ,parseData:function(dataFromServer){
+                    , parseData: function (dataFromServer) {
                         console.log(dataFromServer);
                         return {
-                            "code":0,
-                            "count":dataFromServer.data.length,
-                            data:dataFromServer.data
-
+                            "code": 0,
+                            "count": dataFromServer.data.length,
+                            data: dataFromServer.data
                         }
                     }
                     , skin: 'line' //表格风格
@@ -78,11 +67,12 @@ var AnnouncementService = {
                     , page: true //开启分页
                     , limit: 10
                     , limits: [5, 10, 15]
+                    ,where:{"X-Authentication-Token":localStorage.getItem("token")}
 
                 });
 
                 //行内监听事件 ,点击行，出章节。
-                layui.table.on('row(demoId)', function(obj){
+                layui.table.on('row(demoId)', function (obj) {
                     let lineData = obj.data;
                     //alert(JSON.stringify(lineData))
                     //{"id":1,"title":"落难千金，别嚣张","author":"颜紫欣","publish_date":"2020-02-04 00:00:00","word_count":0,"novel_link":"https://www.hunhun520.com/book/luonanqianjin_biexiaozhang/","status":1,"operator_time":"2020-03-31 19:45:01"}
@@ -94,7 +84,7 @@ var AnnouncementService = {
                     //视图如何展示？
                     layui.table.render({
                         elem: '#demoId' //绑定元素
-                        , url: '/chapter/getChapters/'+novelId //接口
+                        , url: '/chapter/getChapters/' + novelId //接口
                         , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                         , cols: [[
                             {field: 'id', width: 70, title: 'ID', sort: true}
@@ -104,17 +94,17 @@ var AnnouncementService = {
                             , {field: 'chapter_link', title: '链接', sort: true}
                             , {field: 'operator_time', title: '更新时间', sort: true}
                         ]]
-                        ,request:{
-                            pageName:"pageNo",
-                            limitName:"pageSize"
+                        , request: {
+                            pageName: "pageNo",
+                            limitName: "pageSize"
                         }
                         //数据重新绑定。
-                        ,parseData:function(dataFromServer){
+                        , parseData: function (dataFromServer) {
                             // console.log(dataFromServer);
                             return {
-                                "code":0,
-                                "count":dataFromServer.data.total,
-                                data:dataFromServer.data.data
+                                "code": 0,
+                                "count": dataFromServer.data.total,
+                                data: dataFromServer.data.data
                             }
                         }
                         , skin: 'line' //表格风格
@@ -129,7 +119,7 @@ var AnnouncementService = {
 
                     //添加行内事件。点击章节出内容。
                     //localhost:6013/content/hunhun/getContentByHref?chapterLink=
-                    layui.table.on('row(demoId)', function(obj){
+                    layui.table.on('row(demoId)', function (obj) {
                         let lineData = obj.data;
                         //alert(JSON.stringify(lineData))
                         //{"id":1,"title":"落难千金，别嚣张","author":"颜紫欣","publish_date":"2020-02-04 00:00:00","word_count":0,"novel_link":"https://www.hunhun520.com/book/luonanqianjin_biexiaozhang/","status":1,"operator_time":"2020-03-31 19:45:01"}
@@ -145,7 +135,7 @@ var AnnouncementService = {
                         $.ajax({
                             url: "/content/hunhun/getContentByHref",
                             type: 'post',
-                            data:{chapterLink:chapterLink},
+                            data: {chapterLink: chapterLink},
                             beforeSend: function () {
                                 console.log(this)
                                 this.layerIndex = layer.load(1, {
@@ -159,8 +149,8 @@ var AnnouncementService = {
 
                                 layer.open({
                                     title: '爬取结果'
-                                    ,content: content
-                                    ,area: ['1200px', '550px']
+                                    , content: content
+                                    , area: ['1200px', '550px']
                                 });
 
                                 //  layer.msg(content)
@@ -178,16 +168,15 @@ var AnnouncementService = {
 
         })
     },
-    addList:function(){
+    addList: function () {
 
     },
-    deleteOne:function(){
+    deleteOne: function () {
 
     },
-    updateOne:function(){
+    updateOne: function () {
 
     }
-
 
 
 }
