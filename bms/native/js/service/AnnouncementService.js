@@ -47,7 +47,20 @@ var AnnouncementService = {
         })
     },
     lookOne:function (obj) {
-        layer.msg("内容展示");
+        let lineData = obj.data;
+
+        // for( field in lineData){
+        //     console.log(field + ' : ' + lineData[field])
+        // }
+
+        layer.open({
+            title: lineData.title
+            ,content: lineData.content
+            ,area: ['1200px', '550px']
+        });
+
+
+
     },
     addList: function () {
 

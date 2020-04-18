@@ -31,7 +31,7 @@ body {font-size: 14px;font-family: "微软雅黑";}
 
 .container header {
     height: 56px;
-    background: #304156;
+    background:#262626;
 }
 
 .container header .logo {
@@ -73,17 +73,17 @@ body {font-size: 14px;font-family: "微软雅黑";}
     min-height: calc(100vh - 56px - 100px);
     border-top:1px solid #f2f2f2;
     box-sizing: border-box;
-    background: #304156;
+    background: #262626;
 }
 
 .container .main-view aside ul li {
     line-height: 50px;
     text-align: center;
-    background: #304156;
+    background:#262626;
     margin: 0px auto;
 }
 .container .main-view aside ul li:hover{
-    background: #1d3040;
+    background: #000000;
 }
 .container .main-view aside ul li a{
     color:#f2f2f2;
@@ -95,7 +95,7 @@ body {font-size: 14px;font-family: "微软雅黑";}
 }
 
 .container .main-view aside ul li ul li:hover{
-    background: #1c2938;
+    background: #000;
 }
 
 
