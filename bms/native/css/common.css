@@ -148,18 +148,18 @@ th{
 
 }
 
-/*  odd/even 隔行换色  */
-table tr:nth-child(odd){
-    background: rgba(105, 94, 204, 0.37);
-}
+/*!*  odd/even 隔行换色  *!*/
+/*table tr:nth-child(odd){*/
+/*    background: rgba(105, 94, 204, 0.37);*/
+/*}*/
 
-table tr td:nth-child(odd){
-    background:#a2a0a38f;
-}
+/*table tr td:nth-child(odd){*/
+/*    background:#a2a0a38f;*/
+/*}*/
 
-table tbody{
-    border-bottom: 1px solid gray ;
-}
+/*table tbody{*/
+/*    border-bottom: 1px solid gray ;*/
+/*}*/
 
 /*
 

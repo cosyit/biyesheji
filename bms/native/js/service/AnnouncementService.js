@@ -40,17 +40,15 @@ var AnnouncementService = {
                     , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                     , cols: [[
                         {field: 'id', width: 70, title: 'ID', sort: true}
-                        , {field: 'title', width: 280, title: '小说名'}
-                        , {field: 'author', width: 100, title: '作者', sort: true}
-                        , {field: 'publish_date', width: 80, title: '时间'}
-                        , {field: 'word_count', title: '字数', width: '10%', minWidth: 50} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                        , {field: 'novel_link', title: '链接', sort: true}
-                        , {field: 'operator_time', title: '更新时间', sort: true}
+                        , {field: 'title', width: 280, title: '标题'}
+                        , {field: 'fromUserId', width: 100, title: 'fromUserId', sort: true}
+                        , {field: 'toUserId', width: 80, title: 'toUserId'}
+                        , {field: 'content', title: '内容', width: '10%', minWidth: 50} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
                     ]]
                     , request: {
                         pageName: "pageNo",
-                        limitName: "pageSize",
-                        headers:{"X-Authentication-Token":localStorage.getItem("token")}
+                        limitName: "pageSize"
+                        //, headers:{"X-Authentication-Token":localStorage.getItem("token")}
                     }
                     //数据重新绑定。
                     , parseData: function (dataFromServer) {
