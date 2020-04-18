@@ -9,7 +9,7 @@
  *
  * popup("calc(100vw - 50vw)","calc(100vh - 50vh)","20vh","25vw","<p>测试</p>")
  */
-function popup(width, height, top, left, insertHtml) {
+function popup(/*width, height, top, left, */insertHtml) {
     //1.添加遮罩层。
 
     //创建遮罩层。
@@ -27,7 +27,7 @@ function popup(width, height, top, left, insertHtml) {
     $('body').append(overLayer)
 
     //2.在遮罩层上，添加弹窗div.
-    var popWindow = $('<div></div>');
+    var popWindow = $('<div id="popWindow"></div>');
 
 
     popWindow.css({

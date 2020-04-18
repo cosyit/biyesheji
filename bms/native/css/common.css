@@ -15,6 +15,8 @@ body {font-size: 14px;font-family: "微软雅黑";}
 
 .mt-2{margin-top:1px;}
 .ml-1{margin-left: 1px;}
+.p-all-20{padding: 20px}
+.p-horizontal-direction-20{padding:0 20px}
 
 /**header css */
 

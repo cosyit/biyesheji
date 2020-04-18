@@ -5,7 +5,7 @@ var globalService = {
     setUIHtml:function(html){
         $('section').html(html);
     },
-    pop:function(width, height, top, left, insertHtml) {
+    pop:function(/*width, height, top, left,*/ insertHtml) {
         //1.添加遮罩层。
 
         //创建遮罩层。
@@ -23,8 +23,7 @@ var globalService = {
         $('body').append(overLayer)
 
         //2.在遮罩层上，添加弹窗div.
-        var popWindow = $('<div></div>');
-
+        var popWindow = $('<div id="popWindow"></div>');
 
         popWindow.css({
             width: "calc(100vw - 50vw)",
@@ -46,5 +45,9 @@ var globalService = {
                 $(this).remove();
             })
         })
+    },
+    removePop:function () {
+        $("#overLayer").remove();
+        $("#popWindow").remove();
     }
 }
