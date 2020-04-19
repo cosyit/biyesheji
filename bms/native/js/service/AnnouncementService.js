@@ -135,7 +135,7 @@ var AnnouncementService = {
                             let id = data[i].id;
                             ids.push(id);
                         }
-                        AnnouncementService.deleteAnnouncement(ids);
+                        AnnouncementService.deleteAjax(ids);
                         break;
                 }
                 ;
@@ -158,7 +158,7 @@ var AnnouncementService = {
 
 
     },
-    deleteAnnouncement: function (ids) {
+    deleteAjax: function (ids) {
         //发送ajax
 
         $.ajax({

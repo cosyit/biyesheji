@@ -33,3 +33,4 @@ build/
 # /src/J soup 选择器参考/
 
 clean-keeping-web-page.iml
+bms/native/js/util/global.js

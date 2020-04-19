@@ -99,21 +99,11 @@ var UserService = {
                         break;
                     case 'editData':
                         UserService.editOperation(checkStatus);
-
                         break;
                     case 'deleteData':
-                        var data = checkStatus.data;  //获取选中行数据
-                        alert(JSON.stringify(data.length));
-
-                        let ids = [];
-                        for (var i = 0; i < data.length; i++) {
-                            let id = data[i].id;
-                            ids.push(id);
-                        }
-                        UserService.deleteAnnouncement(ids);
+                        UserService.deleteOperation(checkStatus);
                         break;
-                }
-                ;
+                };
             });
 
         })
@@ -133,7 +123,7 @@ var UserService = {
 
 
     },
-    deleteUserByTelephone: function (telephone) {
+    deleteRequest: function (telephone) {
         //发送ajax
 
         $.ajax({
@@ -158,14 +148,14 @@ var UserService = {
 
         UserService.showList();
     },
-    editAjax: function (id) {
+    editUserRequest: function (id) {
         layer.msg("edit id ：" + id);
         //根据id 查询当前id的信息，并绑定到页面上。
         //打开pop 进行数据绑定。
         globalService.pop();
     },
     //添加请求。
-    addUserAjax: function () {
+    addUserRequest: function () {
         let name = $('.name').val();
         let password = $('.password').val();
         let newTelephone = $('.newTelephone').val();
@@ -263,7 +253,7 @@ var UserService = {
 
             "  <div class=\"layui-form-item  p-horizontal-direction-20\">\n" +
             "    <div class=\"layui-input-block\">\n" +
-            "      <button onclick='UserService.addUserAjax()' type=\"submit\" class=\"layui-btn\" lay-submit=\"\" lay-filter=\"demo1\">立即提交</button>\n" +
+            "      <button onclick='UserService.addUserRequest()' type=\"submit\" class=\"layui-btn\" lay-submit=\"\" lay-filter=\"demo1\">立即提交</button>\n" +
             "    </div>\n" +
             "  </div>");
     },
@@ -279,7 +269,21 @@ var UserService = {
             layer.msg("请选择唯一的公告进行编辑。");
             return;
         }else if(data.length == 1){
-            UserService.editAjax(data[0].id);
+            UserService.editUserRequest(data[0].id);
+        }
+    },
+    deleteOperation(checkStatus) {
+        var data = checkStatus.data;  //获取选中行数据
+        console.log(JSON.stringify(data.length));
+
+        if(data.length==0){
+            layer.msg("当前未选择，请选择一个用户。");
+            return;
+        }else if(data.length>1){
+            layer.msg("请选择唯一的用户进行删除。");
+            return;
+        }else if(data.length == 1){
+            UserService.deleteRequest(data[0].newTelephone);
         }
     }
 }
