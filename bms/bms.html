@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="UTF-8">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+
+    <title>Title</title>
+
+    <!--    自己编写的本地库-->
+    <link rel="stylesheet" href="native/css/common.css">
+    <script type="text/javascript" src="native/js/lib/jquery-3.2.1.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="native/js/function/david_page.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="native/js/plugins/page.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="native/js/plugins/popupOverLayer.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="native/js/util/global.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="native/js/service/AnnouncementService.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="native/js/service/UserService.js" charset="UTF-8"></script>
+
+    <!--   引用的lay-ui 插件。-->
+    <link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+    <script src="layui/layui.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1112481_95flrseah6m.css">
+
+    <!--   fixme : 搞不懂 为什么抽出来就不能用了？-->
+    <!--    <script type="text/javascript" src="js/plugins/menu.js" charset="UTF-8"></script>-->
+
+    <!--    公告功能 JS-->
+
+</head>
+<body>
+<div class="container m0-setting-width">
+
+    <header class="clear-float">
+        <div class="logo w240 clear-float fl">
+            <div class="logo-img fl"></div>
+            <div class="logo-title fl">
+                学院系部管理系统
+            </div>
+        </div>
+
+        <div class="login-part fr" style="background:rgba(211,193,152,0.12);"></div>
+    </header>
+
+    <div class="main-view clear-float">
+
+        <aside class="fl">
+            <!--           双层ui-li 实现menu菜单 ：ul.card-menu>li.unit-parent*2>ul>li.children*3  fixme: 前面的结构描述不对, ul.card-menu>(li.unit-parent+ul>li.children*3)*2-->
+            <ul>
+                <li onclick="" class="unit-parent">
+                    <a href="javascript:void(0)">科研信息管理<i class="iconfont icon-zhankai"></i></a>
+                </li>
+                <ul class="children">
+                    <li onclick="AnnouncementService.showList()"><a href="javascript:void(0)">公告管理</a></li>
+                    <li><a href="#">我的成果</a></li>
+                    <li><a href="#">信息采集</a></li>
+                </ul>
+
+                <li onclick="" class="unit-parent">
+                    <a href="javascript:void(0)">系统管理子系统<i class="iconfont icon-zhankai"></i></a>
+                </li>
+                <ul class="children">
+                    <li><a href="javascript:void(0)">公告管理</a></li>
+                    <li onclick="UserService.showList()"><a href="javascript:void(0)">用户管理</a></li>
+                    <li><a href="javascript:void(0)">权限管理</a></li>
+                </ul>
+
+                <li onclick="" class="unit-parent">
+                    <a href="javascript:void(0)">权限管理系统<i class="iconfont icon-zhankai"></i></a>
+                </li>
+                <ul class="children">
+                    <li><a href="javascript:void(0)">公告管理</a></li>
+                    <li><a href="javascript:void(0)">用户管理</a></li>
+                    <li><a href="javascript:void(0)">权限管理</a></li>
+                </ul>
+            </ul>
+        </aside>
+
+
+        <!--        UI 视图           -->
+        <section>
+
+
+        </section>
+    </div>
+
+    <footer style="background:#d3c198;height: 100px;"></footer>
+
+
+    <!--     抽不出来的JS部分 -->
+    <script>
+        /**
+         * 展开，收缩 单元的代码。
+         * MENU结构 ul.card-menu>(li.unit-parent+ul>li.children*3)*2
+         */
+        (function () {
+
+                //发送ajax 的时候，从这里拿token 即可。
+                var token = localStorage.getItem("token");
+
+                //先隐藏所有模块，根据权限显示参数显示模块
+                $('.main-view>aside>ul>li').hide();
+                $('.main-view>aside>ul>.children').hide();
+
+
+                let menuList = $('.main-view>aside>ul>li').get();
+
+                console.log(menuList[0])
+
+
+                //1.每次第一次加载页面的时候，先隐藏所有的子级。
+                /**
+                 * speed:三种预定速度之一的字符串("slow","normal", or "fast")或表示动画时长的毫秒数值(如：1000)
+                 easing:(Optional) 用来指定切换效果，默认是"swing"，可用参数"linear"
+                 fn:在动画完成时执行的函数，每个元素执行一次。
+                 */
+
+                var showListString;
+                var queryString = window.location.search;
+
+                //alert( "queryString:" +queryString);
+
+                //如果存在问号的话。
+                if (queryString.indexOf('?') != -1) {
+
+                    //多个参数。
+                    var str = queryString.substr(1);
+                    //
+                    let strings = str.split("&");
+                    for (var i = 0; i < strings.length; i++) {
+                        // alert(" 需要显示的菜单模块 ：" +strings[i]);
+                        let key_value_list = strings[i].split("=");
+
+                        for (var k = 0; k < key_value_list.length; k++) {
+                            // alert( key_value_list [0] + "  ===>  " +key_value_list[1])
+                            if (key_value_list[0] == "showList") {
+                                showListString = key_value_list[1];
+                            }
+                        }
+                    }
+                }
+
+
+                //取 参数 showList 后面的值。是一个字符串
+                let showListStringArr = showListString.split(",");
+                //如果权限模块大于0[有权限]
+                // if(showListStringArr.length>0){
+                //     $('.main-view>aside>ul').show();
+                // }
+
+                //进行显示。
+                for (var i = 0; i < showListStringArr.length; i++) {
+                    console.log(" showListStringArr[i] " + showListStringArr[i])
+                    $('.main-view>aside>ul>li').eq(showListStringArr[i]).show();
+                    $('.main-view>aside>ul>.children').eq(showListStringArr[i]).show();
+                }
+
+                //默认第一个展开
+                // $('.children').hide(300, function () {
+                //     $(".children").eq(0).show(300);
+                // });
+
+
+                //2.模块单元UI开关上的图片，展开同时更换图标。
+                $(".unit-parent").first().find('i').attr("class", "iconfont icon-shousuo");
+
+
+                /**
+                 *  cb函数 ： 闭合和展开的规则。
+                 */
+                var closeAndOpenCallBack = function (e) {
+                    /**
+                     * eq()方法返回的是一个JQuery对象，也就是[object Object];
+
+                     get()方法返回的是DOM对象组成的数组，也就是[object HTMLLIElement];
+
+                     get出来的是原生JS对象。
+
+                     ​JQ->JS
+                     var $idElement = $("#id"); 
+                     var  idElement=$idElement.get(0);
+                     console.log(idElement.checked); //调用JS的属性
+
+                     ​JS->JQ
+                     var jsobj = document.getElementById('xxId');   
+                     var $obj = $(jsobj); 
+
+                     =============
+
+                     $(node).prev(); 相邻的前一个节点
+                     $(node).next();相邻的后一个节点。
+                     .siblings(":first").val()); 相邻的第一个兄弟节点。
+                     */
+
+
+                    $(this).siblings().css({background: "#262626"});
+                    console.log($(this).get())
+                    $(this).css({background: "#000"});
+                    //$(this).find(".children").off("click");
+                    //根据结构找第一个a标签下的i.
+                    var $i = $(this).first().find('i');
+
+                    //绑定点击事件。  如果是隐藏的，全部显示出来。
+                    if ($(this).next('.children').is(':hidden')) {
+                        $(this).next('.children').show(300);// 显示自己
+                        //并切换iconfont小图标。
+                        if ($i.hasClass("icon-zhankai")) {
+                            $i.toggleClass("icon-zhankai icon-shousuo");
+                        }
+                    } else if ($(this).next('.children').is(':visible')) {  //如果不加else ,上面的代码会在内存中展开列表。
+                        $(this).next('.children').hide(300);
+                        //隐藏后修改本图标。
+                        if ($i.hasClass("icon-shousuo")) {
+                            $i.toggleClass("icon-shousuo icon-zhankai");
+                        }
+                    }
+                    e.stopPropagation();
+                    e.cancelBubble = true;
+                    //防止默认事件。
+                    //event.preventDefault();
+
+                };
+
+                //3.当小单元整体 被点击的时候， on cb 填入函数名即可。
+                $(".unit-parent").on("click", closeAndOpenCallBack);
+            }
+        )();
+    </script>
+</div>
+</body>
+</html>
