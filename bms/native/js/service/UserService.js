@@ -1,26 +1,217 @@
 var UserService = {
-    showList: function () {
+    //页面请求
+    request:{
+        lookMyInfoRequest() {
+            $.ajax({
+                headers: {"X-Authentication-Token": globalService.tokenOfHeader},
+                url: globalService.basePath + '/user',
+                type: "get",
+                cache: false,
+                async: true,
+                beforeSend: function () {
+                    this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
+                },
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.msg("添加成功")
+                    }
+                },
+                complete: function () {
+                    layer.close(this.layerIndex);
+                }
+            });
 
-        //  lauui.use(["jquery","layer","form",'table'],function(){});
-        layui.use(["jquery", "layer", "form", 'table'], function () {
-            var layUi_$ = layui.$, layer = layui.layer, form = layui.form, table = layui.table;
+        },
+        deleteRequest: function (telephone) {
+            //发送ajax
 
-            //1.清楚上一次展示的数据,并设置新的视图。
-            globalService.setUIHtml("            <table id=\"demoId\" class=\"layui-hide\" lay-filter=\"demoId\"></table>\n" +
-                "            \n" +
-                "            <script type=\"text/html\" id=\"toolbarDemo\">\n" +
-                "\n" +
-                "                <div class=\"layui-btn-group  ml-1 mt-2\">\n" +
-                "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"addData\"><i class=\"layui-icon\"></i>\n" +
-                "                    </button>\n" +
-                /*               "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"editData\"><i class=\"layui-icon\"></i>\n" +
-                               "                    </button>\n" +*/
-                "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"deleteData\"><i class=\"layui-icon\"></i>\n" +
-                "                    </button>\n" +
-                "                </div>\n" +
-                "            </script>");
+            $.ajax({
+                headers: {"X-Authentication-Token": globalService.tokenOfHeader},
+                url: globalService.basePath + '/user/' + telephone,
+                type: "delete",
+                contentType: "application/json;charset=utf-8",
+                cache: false,
+                async: true,
+                beforeSend: function () {
+                    this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
+                },
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.msg("删除成功")
+                        UserService.operation.showListOperation();
+                    }
 
-            //2.发送ajax.
+                },
+                complete: function () {
+                    layer.close(this.layerIndex);
+                }
+            });
+
+        },
+        editUserRequest: function (id) {
+            layer.msg("edit id ：" + id);
+            //根据id 查询当前id的信息，并绑定到页面上。
+            //打开pop 进行数据绑定。
+            globalService.pop();
+        },
+        //添加请求。
+        addUserRequest: function () {
+            let name = $('.name').val();
+            let password = $('.password').val();
+            let newTelephone = $('.newTelephone').val();
+            let age = $('.age').val();
+            let gender = $('.gender').val();
+
+            layer.msg("add Request");
+            let param = {name: name, password: password, newTelephone: newTelephone, age: age, gender: gender};
+            $.ajax({
+                headers: {"X-Authentication-Token": globalService.tokenOfHeader},
+                url: globalService.basePath + '/user',
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(param),
+                cache: false,
+                async: true,
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.msg("添加成功")
+                        globalService.removePop();
+                        UserService.operation.showListOperation();
+                    }else {
+                        layer.msg(res.msg);
+                    }
+                },
+                complete: function () {
+                    layer.close(this.layerIndex);
+                },
+                beforeSend: function () {
+                    this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
+                }
+            });
+        },
+        queryOneUserRequest: function (id) {
+            $.ajax({
+                headers: {"X-Authentication-Token": globalService.tokenOfHeader},
+                url: globalService.basePath + '/user',
+                type: "get",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(param),
+                cache: false,
+                async: true,
+                beforeSend: function () {
+                    this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
+                },
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.msg("添加成功")
+                    }
+                },
+                complete: function () {
+                    layer.close(this.layerIndex);
+                }
+            });
+        },
+    },
+    //页面交互
+    operation:{
+            showListOperation: function () {
+            //  lauui.use(["jquery","layer","form",'table'],function(){});
+            layui.use(["jquery", "layer", "form", 'table'], function () {
+                var layUi_$ = layui.$, layer = layui.layer, form = layui.form, table = layui.table;
+
+                //1.清楚上一次展示的数据,并设置新的视图。
+                globalService.setSectionTagUI(UserView.showUserList);
+                //2.发送ajax.
+                UserService.operation.showListRequest();
+
+                // 表格渲染后，用JS覆盖一下layui表格中不好看的样式。
+                // .layui-table-view {
+                //         margin: 10px 0;
+                //     }
+
+                //绑定行点击事件。
+                table.on('row(demoId)', UserService.operation.lookOperation);
+                table.on('toolbar(demoId)', function (obj) {
+                    console.log(obj)
+
+                    // 行事件
+                    var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+                    switch (obj.event) {
+                        case 'addData':
+                            UserService.operation.addOperation(checkStatus);
+                            break;
+                        case 'editData':
+                            UserService.operation.editOperation(checkStatus);
+                            break;
+                        case 'deleteData':
+                            UserService.operation.deleteOperation(checkStatus);
+                            break;
+                    }
+                    ;
+                });
+
+            })
+        },
+        //添加操作
+        addOperation(checkStatus) {
+            var data = checkStatus.data;  //获取选中行数据
+            // console.log(JSON.stringify(data));
+
+            //添加数据。
+            globalService.pop(UserView.addUserView);
+        },
+        editOperation(checkStatus) {
+            var data = checkStatus.data;  //获取选中行数据
+
+            alert(JSON.stringify(data.length));
+
+            if (data.length == 0) {
+                layer.msg("当前未选择，请选择一个公告。");
+                return;
+            } else if (data.length > 1) {
+                layer.msg("请选择唯一的公告进行编辑。");
+                return;
+            } else if (data.length == 1) {
+                UserService.request.editUserRequest(data[0].id);
+            }
+        },
+        deleteOperation(checkStatus) {
+            var data = checkStatus.data;  //获取选中行数据
+
+            // alert(JSON.stringify(data));
+
+            if (data.length == 0) {
+                layer.msg("当前未选择，请选择一个用户。");
+                return;
+            } else if (data.length > 1) {
+                layer.msg("请选择唯一的用户进行删除。");
+                return;
+            } else if (data.length == 1) {
+                console.log(JSON.stringify(data[0].length));
+                UserService.request.deleteRequest(data[0].telephone);
+            }
+        },
+        //根据用户电话修改用户信息。
+        updateUserOperation() {
+            UserService.request.lookMyInfoRequest();
+        },
+        lookOperation: function (obj) {
+            let lineData = obj.data;
+
+            // for( field in lineData){
+            //     console.log(field + ' : ' + lineData[field])
+            // }
+
+            layer.open({
+                title: lineData.title
+                , content: lineData.content
+                , area: ['1200px', '550px']
+            });
+
+
+        },
+
+        showListRequest() {
             $.ajax({
                 headers: {"X-Authentication-Token": globalService.tokenOfHeader},
                 url: globalService.basePath + '/user/list',
@@ -31,7 +222,7 @@ var UserService = {
                 async: true,
                 success: function (res) {
                     if (res.code == 200) {
-                        table.render({
+                        layui.table.render({
                             elem: '#demoId'//绑定元素
                             , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
                             , toolbar: '#toolbarDemo'
@@ -79,241 +270,6 @@ var UserService = {
                     layer.msg("接口不可用！");
                 }
             });
-
-            // 表格渲染后，用JS覆盖一下layui表格中不好看的样式。
-            // .layui-table-view {
-            //         margin: 10px 0;
-            //     }
-
-
-            //绑定行点击事件。
-            table.on('row(demoId)', UserService.lookOne);
-            table.on('toolbar(demoId)', function (obj) {
-                console.log(obj)
-
-                // 行事件
-                var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
-                switch (obj.event) {
-                    case 'addData':
-                        UserService.addOperation(checkStatus);
-                        break;
-                    case 'editData':
-                        UserService.editOperation(checkStatus);
-                        break;
-                    case 'deleteData':
-                        UserService.deleteOperation(checkStatus);
-                        break;
-                }
-                ;
-            });
-
-        })
-    },
-    lookOne: function (obj) {
-        let lineData = obj.data;
-
-        // for( field in lineData){
-        //     console.log(field + ' : ' + lineData[field])
-        // }
-
-        layer.open({
-            title: lineData.title
-            , content: lineData.content
-            , area: ['1200px', '550px']
-        });
-
-
-    },
-    deleteRequest: function (telephone) {
-        //发送ajax
-
-        $.ajax({
-            headers: {"X-Authentication-Token": globalService.tokenOfHeader},
-            url: globalService.basePath + '/user/' + telephone,
-            type: "delete",
-            contentType: "application/json;charset=utf-8",
-            cache: false,
-            async: true,
-            beforeSend: function () {
-                this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
-            },
-            success: function (res) {
-                if (res.code == 200) {
-                    layer.msg("删除成功")
-                    UserService.showList();
-                }
-
-            },
-            complete: function () {
-                layer.close(this.layerIndex);
-            }
-        });
-
-    },
-    editUserRequest: function (id) {
-        layer.msg("edit id ：" + id);
-        //根据id 查询当前id的信息，并绑定到页面上。
-        //打开pop 进行数据绑定。
-        globalService.pop();
-    },
-    //添加请求。
-    addUserRequest: function () {
-        let name = $('.name').val();
-        let password = $('.password').val();
-        let newTelephone = $('.newTelephone').val();
-        let age = $('.age').val();
-        let gender = $('.gender').val();
-
-        let param = {name: name, password: password, newTelephone: newTelephone, age: age, gender: gender};
-        $.ajax({
-            headers: {"X-Authentication-Token": globalService.tokenOfHeader},
-            url: globalService.basePath + '/user',
-            type: "POST",
-            contentType: "application/json;charset=utf-8",
-            data: JSON.stringify(param),
-            cache: false,
-            async: true,
-            beforeSend: function () {
-                this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
-            },
-            success: function (res) {
-                if (res.code == 200) {
-                    layer.msg("添加成功")
-                }
-            },
-            complete: function () {
-                layer.close(this.layerIndex);
-            }
-        });
-        globalService.removePop();
-        UserService.showList();
-    },
-    queryOneUser: function (id) {
-        $.ajax({
-            headers: {"X-Authentication-Token": globalService.tokenOfHeader},
-            url: globalService.basePath + '/user',
-            type: "get",
-            contentType: "application/json;charset=utf-8",
-            data: JSON.stringify(param),
-            cache: false,
-            async: true,
-            beforeSend: function () {
-                this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
-            },
-            success: function (res) {
-                if (res.code == 200) {
-                    layer.msg("添加成功")
-                }
-            },
-            complete: function () {
-                layer.close(this.layerIndex);
-            }
-        });
-    },
-    //添加操作
-    addOperation(checkStatus) {
-        var data = checkStatus.data;  //获取选中行数据
-        // console.log(JSON.stringify(data));
-        // layer.msg("add");
-        //添加数据。
-        globalService.pop("  <div class=\"layui-form-item p-all-20\">\n" +
-            "    <label class=\"layui-form-label\">姓名</label>\n" +
-            "    <div class=\"layui-input-block\">\n" +
-            "      <input type=\"text\" name=\"name\" lay-verify=\"name\" autocomplete=\"off\" placeholder=\"请输入用户姓名\" class=\"layui-input name\">\n" +
-            "    </div>\n" +
-            "  </div>" +
-
-
-            "  <div class=\"layui-form-item p-all-20\">\n" +
-            "    <label class=\"layui-form-label\">密码</label>\n" +
-            "    <div class=\"layui-input-block\">\n" +
-            "      <input type=\"text\" name=\"password\" lay-verify=\"password\" autocomplete=\"off\" placeholder=\"请输入用户姓名\" class=\"layui-input password\">\n" +
-            "    </div>\n" +
-            "  </div>" +
-
-            "  <div class=\"layui-form-item p-all-20\">\n" +
-            "    <label class=\"layui-form-label\">年龄</label>\n" +
-            "    <div class=\"layui-input-block\">\n" +
-            "      <input type=\"text\" name=\"age\" lay-verify=\"number\" autocomplete=\"off\" placeholder=\"请输入用户年龄\" class=\"layui-input age\">\n" +
-            "    </div>\n" +
-            "  </div>" +
-
-            "  <div class=\"layui-form-item p-all-20\">\n" +
-            "    <label class=\"layui-form-label\">电话</label>\n" +
-            "    <div class=\"layui-input-block\">\n" +
-            "      <input type=\"text\" name=\"newTelephone\" lay-verify=\"number\" autocomplete=\"off\" placeholder=\"请输入用户电话\" class=\"layui-input newTelephone\">\n" +
-            "    </div>\n" +
-            "  </div>" +
-
-            "  <div class=\"layui-form-item p-all-20\">\n" +
-            "    <label class=\"layui-form-label\">性别</label>\n" +
-            "    <div class=\"layui-input-block\">\n" +
-            "      <input type=\"text\" name=\"gender\" lay-verify=\"text\" autocomplete=\"off\" placeholder=\"请输入用户性别\" class=\"layui-input gender\">\n" +
-            "    </div>\n" +
-            "  </div>" +
-
-
-            "  <div class=\"layui-form-item  p-horizontal-direction-20\">\n" +
-            "    <div class=\"layui-input-block\">\n" +
-            "      <button onclick='UserService.addUserRequest()' type=\"submit\" class=\"layui-btn\" lay-submit=\"\" lay-filter=\"demo1\">立即提交</button>\n" +
-            "    </div>\n" +
-            "  </div>");
-    },
-    editOperation(checkStatus) {
-        var data = checkStatus.data;  //获取选中行数据
-
-        alert(JSON.stringify(data.length));
-
-        if (data.length == 0) {
-            layer.msg("当前未选择，请选择一个公告。");
-            return;
-        } else if (data.length > 1) {
-            layer.msg("请选择唯一的公告进行编辑。");
-            return;
-        } else if (data.length == 1) {
-            UserService.editUserRequest(data[0].id);
         }
-    },
-    deleteOperation(checkStatus) {
-        var data = checkStatus.data;  //获取选中行数据
-
-        // alert(JSON.stringify(data));
-
-        if (data.length == 0) {
-            layer.msg("当前未选择，请选择一个用户。");
-            return;
-        } else if (data.length > 1) {
-            layer.msg("请选择唯一的用户进行删除。");
-            return;
-        } else if (data.length == 1) {
-            console.log(JSON.stringify(data[0].length));
-            UserService.deleteRequest(data[0].telephone);
-        }
-    },
-
-    //根据用户电话修改用户信息。
-    updateUserInfo() {
-        UserService.lookMyInfoRequest();
-    },
-    lookMyInfoRequest() {
-        $.ajax({
-            headers: {"X-Authentication-Token": globalService.tokenOfHeader},
-            url: globalService.basePath + '/user',
-            type: "get",
-            cache: false,
-            async: true,
-            beforeSend: function () {
-                this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
-            },
-            success: function (res) {
-                if (res.code == 200) {
-                    layer.msg("添加成功")
-                }
-            },
-            complete: function () {
-                layer.close(this.layerIndex);
-            }
-        });
-
     }
 }

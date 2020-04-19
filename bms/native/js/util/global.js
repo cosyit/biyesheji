@@ -1,9 +1,7 @@
 var globalService = {
     tokenOfHeader:localStorage.getItem("token"),
-    basePath:"http://192.168.1.198:8080",
-    basePath:"http://172.20.10.8:8080",
     basePath:"http://192.168.0.106:8080",
-    setUIHtml:function(html){
+    setSectionTagUI:function(html){
         $('section').html(html);
     },
     pop:function(/*width, height, top, left,*/ insertHtml) {

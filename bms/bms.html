@@ -18,6 +18,7 @@
     <script type="text/javascript" src="native/js/service/AnnouncementService.js" charset="UTF-8"></script>
     <script type="text/javascript" src="native/js/service/AchievementService.js" charset="UTF-8"></script>
     <script type="text/javascript" src="native/js/service/UserService.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="native/js/view/UserView.js" charset="UTF-8"></script>
 
     <!--   引用的lay-ui 插件。-->
     <link rel="stylesheet" type="text/css" href="layui/css/layui.css">
@@ -47,7 +48,7 @@
                 <!--       userInfo  用户信息模块         -->
                 <ul style="width: inherit;height: inherit">
                     <li onclick=""><a href="javascript:void(0)"  class="show-user-name">用户</a></li>
-                    <li onclick="UserService.updateUserInfo()"><a href="javascript:void(0)" >修改信息</a></li>
+                    <li onclick="UserService.operation.updateUserOperation()"><a href="javascript:void(0)" >修改信息</a></li>
                 </ul>
         </div>
     </header>
@@ -71,7 +72,7 @@
                 </li>
                 <ul class="children">
                     <li><a href="javascript:void(0)">公告管理</a></li>
-                    <li onclick="UserService.showList()"><a href="javascript:void(0)">用户管理</a></li>
+                    <li onclick="UserService.operation.showListOperation()"><a href="javascript:void(0)">用户管理</a></li>
                     <li><a href="javascript:void(0)">权限管理</a></li>
                 </ul>
 

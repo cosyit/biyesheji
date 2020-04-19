@@ -6,7 +6,7 @@ var AnnouncementService = {
             var layUi_$ = layui.$, layer = layui.layer, form = layui.form, table = layui.table;
 
             //1.清楚上一次展示的数据,并设置新的视图。
-            globalService.setUIHtml("            <table id=\"demoId\" class=\"layui-hide\" lay-filter=\"demoId\"></table>\n" +
+            globalService.setSectionTagUI("            <table id=\"demoId\" class=\"layui-hide\" lay-filter=\"demoId\"></table>\n" +
                 "            \n" +
                 "            <script type=\"text/html\" id=\"toolbarDemo\">\n" +
                 "\n" +

@@ -1,7 +1,7 @@
 let AchievementService = {
 
     showList: function () {
-        globalService.setUIHtml(`<form class="layui-form" style="margin-top: 32px;">
+        globalService.setSectionTagUI(`<form class="layui-form" style="margin-top: 32px;">
     <label style="margin: 50px;font-size: 32px;width: 300px">基本信息</label>
     <div class="layui-form-item" style="margin-top: 24px;">
         <label class="layui-form-label">论文题目</label>
@@ -185,7 +185,7 @@ let AchievementService = {
                     //行内监听事件 ,点击行，出章节。
                     layui.table.on('row(demoId)', function (obj) {
                         // 清除数据
-                        globalService.setUIHtml(`<table id="demoId" class="layui-hide"></table>`);
+                        globalService.setSectionTagUI(`<table id="demoId" class="layui-hide"></table>`);
                         let id = obj.data.id;
                         $.ajax({
                             headers: {
@@ -237,7 +237,7 @@ let AchievementService = {
         });
     },
     addList: function () {
-        globalService.setUIHtml(
+        globalService.setSectionTagUI(
             `<form class="layui-form" style="margin-top: 32px;">
                 <label style="margin: 50px;font-size: 32px;width: 300px">基本信息</label>
                 <div class="layui-form-item" style="margin-top: 24px;">
