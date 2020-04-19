@@ -66,6 +66,17 @@ body {font-size: 14px;font-family: "微软雅黑";}
     line-height: 56px;
 }
 
+.container header .login-part li{
+    height: inherit;
+    width: 100px;
+    line-height: 56px;
+    float: left;
+}
+
+.container header .login-part li a{
+    color:#F2F2F2;
+}
+
 /* 主视图区*/
 .container .main-view{
     position:relative;

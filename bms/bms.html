@@ -41,7 +41,14 @@
             </div>
         </div>
 
-        <div class="login-part fr" style="background:rgba(211,193,152,0.12);"></div>
+        <!--   右上角用户中心[个人中心，消息等等...]     -->
+        <div class="login-part fr">
+                <!--       userInfo  用户信息模块         -->
+                <ul style="width: inherit;height: inherit">
+                    <li><a href="javascript:void(0)" onclick="" class="show-user-name">用户</a></li>
+                    <li><a href="javascript:void(0)" onclick="">修改信息</a></li>
+                </ul>
+        </div>
     </header>
 
     <div class="main-view clear-float">
@@ -138,9 +145,14 @@
                             if (key_value_list[0] == "showList") {
                                 showListString = key_value_list[1];
                             }
+                            if(key_value_list[0] == "username"){
+                               let username = key_value_list[1];
+                                $(".show-user-name").html(username);
+                            }
                         }
                     }
                 }
+
 
 
                 //取 参数 showList 后面的值。是一个字符串
