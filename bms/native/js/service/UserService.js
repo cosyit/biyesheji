@@ -1,11 +1,7 @@
-var UserService = {
-
-
+let UserService = {
     //页面请求
     request: {
         lookMyInfoRequest() {
-
-
             layui.use(["layer"], function () {
                 let layer = layui.layer;
                 $.ajax({
@@ -19,7 +15,16 @@ var UserService = {
                     },
                     success: function (res) {
                         if (res.code == 200) {
-                            layer.msg("添加成功")
+                            layer.msg("返回成功 :" +JSON.stringify(res.data));
+
+                            sessionStorage.setItem("name",res.data.name);
+                            sessionStorage.setItem("age",res.data.age);
+                            sessionStorage.setItem("gender",res.data.gender);
+                            sessionStorage.setItem("password",res.data.password);
+                            sessionStorage.setItem("telephone",res.data.telephone);
+
+                            globalService.setSectionTagUI(UserView.lookMyselfUserInfo);
+
                         }
                     },
                     complete: function () {
@@ -56,10 +61,46 @@ var UserService = {
 
         },
         editUserRequest: function (id) {
-            layer.msg("edit id ：" + id);
-            //根据id 查询当前id的信息，并绑定到页面上。
-            //打开pop 进行数据绑定。
-            globalService.pop();
+            let name = $('.name').val();
+            let password = $('.password').val();
+            let newTelephone = $('.newTelephone').val();
+            let age = $('.age').val();
+            let gender = $('.gender').val();
+
+            layer.msg("add Request");
+            let param = {name: name, password: password, newTelephone: newTelephone, age: age, gender: gender};
+            $.ajax({
+                headers: {"X-Authentication-Token": globalService.tokenOfHeader},
+                url: globalService.basePath + '/user',
+                type: "PUT",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(param),
+                cache: false,
+                async: true,
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.msg("修改成功");
+
+                        //更新本地数据，页面数据回显。
+                        sessionStorage.setItem("name",res.data.name);
+                        sessionStorage.setItem("age",res.data.age);
+                        sessionStorage.setItem("password",res.data.password);
+                        sessionStorage.setItem("gender",res.data.gender);
+                        sessionStorage.setItem("telephone",res.data.telephone);
+                        globalService.setSectionTagUI(UserView.lookMyselfUserInfo());
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                },
+                complete: function () {
+                    layer.close(this.layerIndex);
+                },
+                beforeSend: function () {
+                    this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
+                }
+            });
+
+
         },
         //添加请求。
         addUserRequest: function () {
@@ -275,5 +316,5 @@ var UserService = {
                 }
             });
         }
-    }
+    },
 }
