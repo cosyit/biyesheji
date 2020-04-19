@@ -16,6 +16,7 @@
     <script type="text/javascript" src="native/js/plugins/popupOverLayer.js" charset="UTF-8"></script>
     <script type="text/javascript" src="native/js/util/global.js" charset="UTF-8"></script>
     <script type="text/javascript" src="native/js/service/AnnouncementService.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="native/js/service/AchievementService.js" charset="UTF-8"></script>
     <script type="text/javascript" src="native/js/service/UserService.js" charset="UTF-8"></script>
 
     <!--   引用的lay-ui 插件。-->
@@ -61,7 +62,7 @@
                 </li>
                 <ul class="children">
                     <li onclick="AnnouncementService.showList()"><a href="javascript:void(0)">公告管理</a></li>
-                    <li><a href="#">我的成果</a></li>
+                    <li onclick="AchievementService.showList()"><a href="javascript:void(0)">我的成果</a></li>
                     <li><a href="#">信息采集</a></li>
                 </ul>
 
