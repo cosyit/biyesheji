@@ -117,8 +117,16 @@
 
     function remove(obj) {
         let $tr = $(obj).parent().parent();
+        let $tds = $tr.children("td");
         $tr.remove();
-        console.log($tr)
+        let seq = $tds.eq(0).find('input[name="seq"]').val();
+        console.log(authors);
+        for (let i = 0; i < authors.length; i++) {
+            if (authors[i].seq === seq) {
+                authors.splice(i, 1)
+            }
+        }
+        console.log(authors);
     }
 
     $("#fileUpload").click(function () {
