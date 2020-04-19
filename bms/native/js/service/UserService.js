@@ -289,5 +289,31 @@ var UserService = {
             console.log(JSON.stringify(data[0].length));
             UserService.deleteRequest(data[0].telephone);
         }
+    },
+
+    //根据用户电话修改用户信息。
+    updateUserInfo() {
+        UserService.lookMyInfoRequest();
+    },
+    lookMyInfoRequest() {
+        $.ajax({
+            headers: {"X-Authentication-Token": globalService.tokenOfHeader},
+            url: globalService.basePath + '/user',
+            type: "get",
+            cache: false,
+            async: true,
+            beforeSend: function () {
+                this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
+            },
+            success: function (res) {
+                if (res.code == 200) {
+                    layer.msg("添加成功")
+                }
+            },
+            complete: function () {
+                layer.close(this.layerIndex);
+            }
+        });
+
     }
 }
