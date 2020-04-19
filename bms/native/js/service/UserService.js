@@ -13,8 +13,8 @@ var UserService = {
                 "                <div class=\"layui-btn-group  ml-1 mt-2\">\n" +
                 "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"addData\"><i class=\"layui-icon\"></i>\n" +
                 "                    </button>\n" +
- /*               "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"editData\"><i class=\"layui-icon\"></i>\n" +
-                "                    </button>\n" +*/
+                /*               "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"editData\"><i class=\"layui-icon\"></i>\n" +
+                               "                    </button>\n" +*/
                 "                    <button type=\"button\" class=\"layui-btn layui-btn-primary layui-btn-sm\"  lay-event=\"deleteData\"><i class=\"layui-icon\"></i>\n" +
                 "                    </button>\n" +
                 "                </div>\n" +
@@ -103,7 +103,8 @@ var UserService = {
                     case 'deleteData':
                         UserService.deleteOperation(checkStatus);
                         break;
-                };
+                }
+                ;
             });
 
         })
@@ -139,14 +140,15 @@ var UserService = {
             success: function (res) {
                 if (res.code == 200) {
                     layer.msg("删除成功")
+                    UserService.showList();
                 }
+
             },
             complete: function () {
                 layer.close(this.layerIndex);
             }
         });
 
-        UserService.showList();
     },
     editUserRequest: function (id) {
         layer.msg("edit id ：" + id);
@@ -162,7 +164,7 @@ var UserService = {
         let age = $('.age').val();
         let gender = $('.gender').val();
 
-        let param = {name:name,password:password,newTelephone:newTelephone,age: age, gender: gender};
+        let param = {name: name, password: password, newTelephone: newTelephone, age: age, gender: gender};
         $.ajax({
             headers: {"X-Authentication-Token": globalService.tokenOfHeader},
             url: globalService.basePath + '/user',
@@ -186,7 +188,7 @@ var UserService = {
         globalService.removePop();
         UserService.showList();
     },
-    queryOneUser:function (id) {
+    queryOneUser: function (id) {
         $.ajax({
             headers: {"X-Authentication-Token": globalService.tokenOfHeader},
             url: globalService.basePath + '/user',
@@ -262,28 +264,30 @@ var UserService = {
 
         alert(JSON.stringify(data.length));
 
-        if(data.length==0){
+        if (data.length == 0) {
             layer.msg("当前未选择，请选择一个公告。");
             return;
-        }else if(data.length>1){
+        } else if (data.length > 1) {
             layer.msg("请选择唯一的公告进行编辑。");
             return;
-        }else if(data.length == 1){
+        } else if (data.length == 1) {
             UserService.editUserRequest(data[0].id);
         }
     },
     deleteOperation(checkStatus) {
         var data = checkStatus.data;  //获取选中行数据
-        console.log(JSON.stringify(data.length));
 
-        if(data.length==0){
+        // alert(JSON.stringify(data));
+
+        if (data.length == 0) {
             layer.msg("当前未选择，请选择一个用户。");
             return;
-        }else if(data.length>1){
+        } else if (data.length > 1) {
             layer.msg("请选择唯一的用户进行删除。");
             return;
-        }else if(data.length == 1){
-            UserService.deleteRequest(data[0].newTelephone);
+        } else if (data.length == 1) {
+            console.log(JSON.stringify(data[0].length));
+            UserService.deleteRequest(data[0].telephone);
         }
     }
 }
