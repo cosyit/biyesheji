@@ -1,24 +1,31 @@
 var UserService = {
+
+
     //页面请求
-    request:{
+    request: {
         lookMyInfoRequest() {
-            $.ajax({
-                headers: {"X-Authentication-Token": globalService.tokenOfHeader},
-                url: globalService.basePath + '/user',
-                type: "get",
-                cache: false,
-                async: true,
-                beforeSend: function () {
-                    this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
-                },
-                success: function (res) {
-                    if (res.code == 200) {
-                        layer.msg("添加成功")
+
+
+            layui.use(["layer"], function () {
+                let layer = layui.layer;
+                $.ajax({
+                    headers: {"X-Authentication-Token": globalService.tokenOfHeader},
+                    url: globalService.basePath + '/user',
+                    type: "get",
+                    cache: false,
+                    async: true,
+                    beforeSend: function () {
+                        this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
+                    },
+                    success: function (res) {
+                        if (res.code == 200) {
+                            layer.msg("添加成功")
+                        }
+                    },
+                    complete: function () {
+                        layer.close(this.layerIndex);
                     }
-                },
-                complete: function () {
-                    layer.close(this.layerIndex);
-                }
+                });
             });
 
         },
@@ -77,7 +84,7 @@ var UserService = {
                         layer.msg("添加成功")
                         globalService.removePop();
                         UserService.operation.showListOperation();
-                    }else {
+                    } else {
                         layer.msg(res.msg);
                     }
                 },
@@ -113,12 +120,11 @@ var UserService = {
         },
     },
     //页面交互
-    operation:{
-            showListOperation: function () {
+    operation: {
+        showListOperation: function () {
             //  lauui.use(["jquery","layer","form",'table'],function(){});
-            layui.use(["jquery", "layer", "form", 'table'], function () {
-                var layUi_$ = layui.$, layer = layui.layer, form = layui.form, table = layui.table;
-
+            layui.use(['table'], function () {
+                let table = layui.table;
                 //1.清楚上一次展示的数据,并设置新的视图。
                 globalService.setSectionTagUI(UserView.showUserList);
                 //2.发送ajax.
@@ -162,9 +168,7 @@ var UserService = {
         },
         editOperation(checkStatus) {
             var data = checkStatus.data;  //获取选中行数据
-
-            alert(JSON.stringify(data.length));
-
+            // alert(JSON.stringify(data.length));
             if (data.length == 0) {
                 layer.msg("当前未选择，请选择一个公告。");
                 return;
