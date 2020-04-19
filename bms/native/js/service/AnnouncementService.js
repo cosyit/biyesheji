@@ -208,20 +208,25 @@ var AnnouncementService = {
             data: JSON.stringify(param),
             cache: false,
             async: true,
-            beforeSend: function () {
-                this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
-            },
             success: function (res) {
                 if (res.code == 200) {
-                    layer.msg("添加成功")
+                    layer.msg("添加成功");
+
+                    //异步中得同步。放在外面可能执行不到，因为是异步得。
+                    globalService.removePop();
+                    AnnouncementService.showList();
                 }
-            },
-            complete: function () {
-                layer.close(this.layerIndex);
             }
+
+
+            // ,
+            // beforeSend: function () {
+            //     this.layerIndex = layer.load(0, {shade: [0.5, '#393D49']});
+            // },
+            // complete: function () {
+            //     layer.close(this.layerIndex);
+            // }
         });
-        globalService.removePop();
-        AnnouncementService.showList();
     },
     queryOneAnnouncement:function (id) {
         $.ajax({

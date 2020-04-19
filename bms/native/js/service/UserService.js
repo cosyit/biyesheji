@@ -87,7 +87,7 @@ var UserService = {
 
 
             //绑定行点击事件。
-            table.on('row(demoId)', AnnouncementService.lookOne);
+            table.on('row(demoId)', UserService.lookOne);
             table.on('toolbar(demoId)', function (obj) {
                 console.log(obj)
 
@@ -110,7 +110,7 @@ var UserService = {
                             let id = data[i].id;
                             ids.push(id);
                         }
-                        AnnouncementService.deleteAnnouncement(ids);
+                        UserService.deleteAnnouncement(ids);
                         break;
                 }
                 ;
@@ -133,12 +133,12 @@ var UserService = {
 
 
     },
-    deleteAnnouncement: function (ids) {
+    deleteUserByTelephone: function (telephone) {
         //发送ajax
 
         $.ajax({
             headers: {"X-Authentication-Token": globalService.tokenOfHeader},
-            url: globalService.basePath + '/announcement/' + ids,
+            url: globalService.basePath + '/user/' + telephone,
             type: "delete",
             contentType: "application/json;charset=utf-8",
             cache: false,
@@ -156,7 +156,7 @@ var UserService = {
             }
         });
 
-        AnnouncementService.showList();
+        UserService.showList();
     },
     editAjax: function (id) {
         layer.msg("edit id ：" + id);
@@ -196,10 +196,10 @@ var UserService = {
         globalService.removePop();
         UserService.showList();
     },
-    queryOneAnnouncement:function (id) {
+    queryOneUser:function (id) {
         $.ajax({
             headers: {"X-Authentication-Token": globalService.tokenOfHeader},
-            url: globalService.basePath + '/announcement',
+            url: globalService.basePath + '/user',
             type: "get",
             contentType: "application/json;charset=utf-8",
             data: JSON.stringify(param),
