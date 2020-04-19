@@ -89,51 +89,16 @@ var UserService = {
             //绑定行点击事件。
             table.on('row(demoId)', AnnouncementService.lookOne);
             table.on('toolbar(demoId)', function (obj) {
-
                 console.log(obj)
 
                 // 行事件
                 var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
                 switch (obj.event) {
                     case 'addData':
-                        var data = checkStatus.data;  //获取选中行数据
-                       // console.log(JSON.stringify(data));
-                       // layer.msg("add");
-                        //添加数据。
-                        globalService.pop("  <div class=\"layui-form-item p-all-20\">\n" +
-                            "    <label class=\"layui-form-label\">公告标题</label>\n" +
-                            "    <div class=\"layui-input-block\">\n" +
-                            "      <input type=\"text\" name=\"title\" lay-verify=\"title\" autocomplete=\"off\" placeholder=\"请输入公告标题\" class=\"layui-input announcementTitle\">\n" +
-                            "    </div>\n" +
-                            "  </div>" +
-
-                            " <div class=\"layui-form-item layui-form-text p-horizontal-direction-20\">\n" +
-                            "    <label class=\"layui-form-label\">内容</label>\n" +
-                            "    <div class=\"layui-input-block\">\n" +
-                            "      <textarea placeholder=\"请输入公告内容\" class=\"layui-textarea announcementContent\"></textarea>\n" +
-                            "    </div>\n" +
-                            "  </div>" +
-                            "" +
-                            "  <div class=\"layui-form-item  p-horizontal-direction-20\">\n" +
-                            "    <div class=\"layui-input-block\">\n" +
-                            "      <button onclick='AnnouncementService.addAnnouncement()' type=\"submit\" class=\"layui-btn\" lay-submit=\"\" lay-filter=\"demo1\">立即提交</button>\n" +
-                            "    </div>\n" +
-                            "  </div>");
+                        UserService.addOperation(checkStatus);
                         break;
                     case 'editData':
-                        var data = checkStatus.data;  //获取选中行数据
-                        alert(JSON.stringify(data.length));
-
-
-                        if(data.length==0){
-                            layer.msg("当前未选择，请选择一个公告。");
-                            return;
-                        }else if(data.length>1){
-                            layer.msg("请选择唯一的公告进行编辑。");
-                            return;
-                        }else if(data.length == 1){
-                        AnnouncementService.editAnnouncement(data[0].id);
-                        }
+                        UserService.editOperation(checkStatus);
 
                         break;
                     case 'deleteData':
@@ -193,27 +158,25 @@ var UserService = {
 
         AnnouncementService.showList();
     },
-    editAnnouncement: function (id) {
+    editAjax: function (id) {
         layer.msg("edit id ：" + id);
         //根据id 查询当前id的信息，并绑定到页面上。
-
-
-
         //打开pop 进行数据绑定。
         globalService.pop();
-
-
-
     },
-    addAnnouncement: function () {
-        let announcementContent = $('.announcementContent').val();
-        let announcementTitle = $('.announcementTitle').val();
+    //添加请求。
+    addUserAjax: function () {
+        let name = $('.name').val();
+        let password = $('.password').val();
+        let newTelephone = $('.newTelephone').val();
+        let age = $('.age').val();
+        let gender = $('.gender').val();
 
-        let param = {title: announcementTitle, content: announcementContent};
+        let param = {name:name,password:password,newTelephone:newTelephone,age: age, gender: gender};
         $.ajax({
             headers: {"X-Authentication-Token": globalService.tokenOfHeader},
-            url: globalService.basePath + '/announcement',
-            type: "post",
+            url: globalService.basePath + '/user',
+            type: "POST",
             contentType: "application/json;charset=utf-8",
             data: JSON.stringify(param),
             cache: false,
@@ -231,7 +194,7 @@ var UserService = {
             }
         });
         globalService.removePop();
-        AnnouncementService.showList();
+        UserService.showList();
     },
     queryOneAnnouncement:function (id) {
         $.ajax({
@@ -254,6 +217,69 @@ var UserService = {
                 layer.close(this.layerIndex);
             }
         });
-    }
+    },
+    //添加操作
+    addOperation(checkStatus) {
+        var data = checkStatus.data;  //获取选中行数据
+        // console.log(JSON.stringify(data));
+        // layer.msg("add");
+        //添加数据。
+        globalService.pop("  <div class=\"layui-form-item p-all-20\">\n" +
+            "    <label class=\"layui-form-label\">姓名</label>\n" +
+            "    <div class=\"layui-input-block\">\n" +
+            "      <input type=\"text\" name=\"name\" lay-verify=\"name\" autocomplete=\"off\" placeholder=\"请输入用户姓名\" class=\"layui-input name\">\n" +
+            "    </div>\n" +
+            "  </div>" +
 
+
+            "  <div class=\"layui-form-item p-all-20\">\n" +
+            "    <label class=\"layui-form-label\">密码</label>\n" +
+            "    <div class=\"layui-input-block\">\n" +
+            "      <input type=\"text\" name=\"password\" lay-verify=\"password\" autocomplete=\"off\" placeholder=\"请输入用户姓名\" class=\"layui-input password\">\n" +
+            "    </div>\n" +
+            "  </div>" +
+
+            "  <div class=\"layui-form-item p-all-20\">\n" +
+            "    <label class=\"layui-form-label\">年龄</label>\n" +
+            "    <div class=\"layui-input-block\">\n" +
+            "      <input type=\"text\" name=\"age\" lay-verify=\"number\" autocomplete=\"off\" placeholder=\"请输入用户年龄\" class=\"layui-input age\">\n" +
+            "    </div>\n" +
+            "  </div>" +
+
+            "  <div class=\"layui-form-item p-all-20\">\n" +
+            "    <label class=\"layui-form-label\">电话</label>\n" +
+            "    <div class=\"layui-input-block\">\n" +
+            "      <input type=\"text\" name=\"newTelephone\" lay-verify=\"number\" autocomplete=\"off\" placeholder=\"请输入用户电话\" class=\"layui-input newTelephone\">\n" +
+            "    </div>\n" +
+            "  </div>" +
+
+            "  <div class=\"layui-form-item p-all-20\">\n" +
+            "    <label class=\"layui-form-label\">性别</label>\n" +
+            "    <div class=\"layui-input-block\">\n" +
+            "      <input type=\"text\" name=\"gender\" lay-verify=\"text\" autocomplete=\"off\" placeholder=\"请输入用户性别\" class=\"layui-input gender\">\n" +
+            "    </div>\n" +
+            "  </div>" +
+
+
+            "  <div class=\"layui-form-item  p-horizontal-direction-20\">\n" +
+            "    <div class=\"layui-input-block\">\n" +
+            "      <button onclick='UserService.addUserAjax()' type=\"submit\" class=\"layui-btn\" lay-submit=\"\" lay-filter=\"demo1\">立即提交</button>\n" +
+            "    </div>\n" +
+            "  </div>");
+    },
+    editOperation(checkStatus) {
+        var data = checkStatus.data;  //获取选中行数据
+
+        alert(JSON.stringify(data.length));
+
+        if(data.length==0){
+            layer.msg("当前未选择，请选择一个公告。");
+            return;
+        }else if(data.length>1){
+            layer.msg("请选择唯一的公告进行编辑。");
+            return;
+        }else if(data.length == 1){
+            UserService.editAjax(data[0].id);
+        }
+    }
 }

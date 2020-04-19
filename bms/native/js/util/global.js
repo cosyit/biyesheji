@@ -27,14 +27,14 @@ var globalService = {
         var popWindow = $('<div id="popWindow"></div>');
 
         popWindow.css({
-            width: "calc(100vw - 50vw)",
-            height: "calc(100vh - 50vh)",
+            width: "calc(100vw - 20vw)",
+            height: "calc(100vh - 20vh)",
             background: "#f2f2f2",
             position: "fixed",
-            top: "20vh",
-            left: "25vw",
+            top: "10vh",
+            left: "10vw",
             zIndex: "1000",
-            borderRadius: "2px"
+            borderRadius: "4px"
         });
         overLayer.after(popWindow);
 

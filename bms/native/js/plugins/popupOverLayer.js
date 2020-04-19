@@ -31,8 +31,8 @@ function popup(/*width, height, top, left, */insertHtml) {
 
 
     popWindow.css({
-        width: "calc(100vw - 50vw)",
-        height: "calc(100vh - 50vh)",
+        width: "calc(100vw - 30vw)",
+        height: "calc(100vh - 30vh)",
         background: "#f2f2f2",
         position: "fixed",
         top: "20vh",
