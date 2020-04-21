@@ -15,7 +15,7 @@ let UserService = {
                     },
                     success: function (res) {
                         if (res.code == 200) {
-                            layer.msg("返回成功 :" + JSON.stringify(res.data));
+                            //layer.msg("返回成功 :" + JSON.stringify(res.data));
 
                             sessionStorage.setItem("name", res.data.name);
                             sessionStorage.setItem("age", res.data.age);
@@ -110,7 +110,7 @@ let UserService = {
             let age = $('.age').val();
             let gender = $('.gender').val();
 
-            layer.msg("add Request");
+            //layer.msg("add Request");
             let param = {name: name, password: password, newTelephone: newTelephone, age: age, gender: gender};
             $.ajax({
                 headers: {"X-Authentication-Token": globalService.tokenOfHeader},
