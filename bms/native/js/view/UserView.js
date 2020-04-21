@@ -65,13 +65,13 @@ var UserView = {
             "    </div>\n" +
             "  </div>" +
 
-
-            "  <div class=\"layui-form-item p-all-20\">\n" +
-            "    <label class=\"layui-form-label\">密码</label>\n" +
-            "    <div class=\"layui-input-block\">\n" +
-            "      <input value='" + DataBinding.getValueFromSessionStorageByKey('password') + "'  type=\"text\" name=\"password\" lay-verify=\"password\" autocomplete=\"off\" placeholder=\"请输入用户姓名\" class=\"layui-input password\">\n" +
-            "    </div>\n" +
-            "  </div>" +
+            //
+            // "  <div class=\"layui-form-item p-all-20\">\n" +
+            // "    <label class=\"layui-form-label\">密码</label>\n" +
+            // "    <div class=\"layui-input-block\">\n" +
+            // "      <input value='" + DataBinding.getValueFromSessionStorageByKey('password') + "'  type=\"text\" name=\"password\" lay-verify=\"password\" autocomplete=\"off\" placeholder=\"请输入用户姓名\" class=\"layui-input password\">\n" +
+            // "    </div>\n" +
+            // "  </div>" +
 
             "  <div class=\"layui-form-item p-all-20\">\n" +
             "    <label class=\"layui-form-label\">年龄</label>\n" +
@@ -109,13 +109,13 @@ var UserView = {
             "    </div>\n" +
             "  </div>" +
 
-
-            "  <div class=\"layui-form-item p-all-20\">\n" +
-            "    <label class=\"layui-form-label\">密码</label>\n" +
-            "    <div class=\"layui-input-block\">\n" +
-            "      <input value='" + DataBinding.getValueFromSessionStorageByKey('password') + "'  type=\"text\" name=\"password\" lay-verify=\"password\" autocomplete=\"off\" placeholder=\"请输入用户姓名\" class=\"layui-input password\">\n" +
-            "    </div>\n" +
-            "  </div>" +
+            //
+            // "  <div class=\"layui-form-item p-all-20\">\n" +
+            // "    <label class=\"layui-form-label\">密码</label>\n" +
+            // "    <div class=\"layui-input-block\">\n" +
+            // "      <input value='" + DataBinding.getValueFromSessionStorageByKey('password') + "'  type=\"text\" name=\"password\" lay-verify=\"password\" autocomplete=\"off\" placeholder=\"请输入用户姓名\" class=\"layui-input password\">\n" +
+            // "    </div>\n" +
+            // "  </div>" +
 
             "  <div class=\"layui-form-item p-all-20\">\n" +
             "    <label class=\"layui-form-label\">年龄</label>\n" +
